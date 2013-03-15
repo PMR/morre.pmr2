@@ -1,0 +1,6 @@
+recursive-include morre *
+recursive-include docs *
+global-exclude *pyc
+global-exclude .*swp
+include *rst
+include *txt
