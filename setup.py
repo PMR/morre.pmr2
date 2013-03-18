@@ -25,6 +25,7 @@ setup(name='morre.pmr2',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
+          'requests',
       ],
       entry_points="""
       # -*- Entry points: -*-

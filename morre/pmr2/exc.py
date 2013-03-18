@@ -1,0 +1,2 @@
+class MorreServerError(Exception):
+    pass

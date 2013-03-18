@@ -1,0 +1,22 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="morre.pmr2">
+
+  <include package="Products.CMFCore" file="permissions.zcml" />
+
+  <browser:view
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="morre_pmr2_search"
+      class=".browser.MorreSearchForm"
+      permission="zope2.View"
+      />
+
+  <browser:view
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="morre_pmr2_admin"
+      class=".browser.MorreAdminForm"
+      permission="cmf.ManagePortal"
+      />
+
+</configure>
