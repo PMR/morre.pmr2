@@ -1,0 +1,11 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="morre.pmr2">
+
+  <utility
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      component=".vocab.FeaturesVocabFactory"
+      name="morre.pmr2.features"
+      />
+
+</configure>

@@ -43,12 +43,14 @@ class MorreServer(Persistent, Contained):
     def query(self, params):
         # TODO filter against self.features
         try:
-            r = request.post(
+            r = requests.post(
                 self.server_uri + self.query_endpoint,
-                data=json.dumps(params))
+                data=json.dumps(params),
+                headers={'content-type': 'application/json'},
+            )
             result = r.json()
-        except:
-            # raising different exception
+        except requests.exceptions.RequestException:
+            # XXX raising different exception, hiding problem
             raise MorreServerError()
 
         return result

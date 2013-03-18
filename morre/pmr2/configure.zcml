@@ -5,6 +5,8 @@
 
   <include package="Products.CMFCore" file="permissions.zcml" />
 
+  <include file="vocab.zcml" />
+
   <browser:view
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       name="morre_pmr2_search"

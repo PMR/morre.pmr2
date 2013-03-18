@@ -26,3 +26,18 @@ class IMorreServer(zope.interface.Interface):
         """
         Return the list of features.
         """
+
+
+class IMorreSearchForm(zope.interface.Interface):
+
+    keywords = zope.schema.TextLine(
+        title=u'Keywords',
+        description=u'A list of keywords, separated by whitespace.',
+    )
+
+    features = zope.schema.List(
+        title=u'Features',
+        description=u'Features to query with',
+        required=False,
+        value_type=zope.schema.Choice(vocabulary='morre.pmr2.features'),
+    )

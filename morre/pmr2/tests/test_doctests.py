@@ -10,6 +10,8 @@ from Products.PloneTestCase.layer import onsetup
 
 from pmr2.z3cform.tests.base import DocTestCase
 
+import morre.pmr2.tests.base
+
 
 def test_suite():
     return unittest.TestSuite([
