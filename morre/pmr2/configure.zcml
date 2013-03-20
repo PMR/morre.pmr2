@@ -4,6 +4,7 @@
     i18n_domain="morre.pmr2">
 
   <include package="Products.CMFCore" file="permissions.zcml" />
+  <include package="pmr2.z3cform" />
 
   <include file="vocab.zcml" />
 
@@ -19,6 +20,15 @@
       name="morre_pmr2_admin"
       class=".browser.MorreAdminForm"
       permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="ploneform-macros"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      layer=".interfaces.IMorreSearchFormLayer"
+      class="pmr2.z3cform.templates.PloneZ3cformMacros"
+      allowed_interface="zope.interface.common.mapping.IItemMapping"
+      permission="zope.Public"
       />
 
 </configure>

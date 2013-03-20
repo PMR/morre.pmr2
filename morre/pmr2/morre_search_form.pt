@@ -21,12 +21,15 @@
 <h3>Result</h3>
 <dl>
   <tal:loop tal:repeat="result view/results">
-    <dt><a tal:content="result/modelName" tal:attributes="
+    <dt><a tal:condition="exists:result/documentURI"
+        tal:content="result/modelName" tal:attributes="
         href result/documentURI"></a></dt>
     <dd>
       <ul>
-        <li>modelID: <span tal:replace="result/modelID"/></li>
-        <li>score: <span tal:replace="result/score"/></li>
+        <li>modelID: <span tal:condition="exists:result/modelID"
+            tal:replace="result/modelID"/></li>
+        <li>score: <span tal:condition="exists:result/score"
+            tal:replace="result/score"/></li>
       </ul>
     </dd>
   </tal:loop>

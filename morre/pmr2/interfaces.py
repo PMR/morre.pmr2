@@ -1,5 +1,8 @@
 import zope.interface
 
+from z3c.form.interfaces import IFormLayer
+from plone.app.z3cform.interfaces import IPloneFormLayer
+
 
 class IMorreServer(zope.interface.Interface):
     """
@@ -12,9 +15,17 @@ class IMorreServer(zope.interface.Interface):
         default=u'http://127.0.0.1:7474',
     )
 
-    features = zope.schema.List(
+    endpoints = zope.schema.List(
+        title=u'Endpoints',
+        description=u'Paths to the valid query endpoints on that server',
+        value_type=zope.schema.TextLine(),
+    )
+
+    features = zope.schema.Dict(
         title=u'Cached Features',
         required=False,
+        key_type=zope.schema.TextLine(),
+        value_type=zope.schema.List(),
     )
 
     def update():
@@ -41,3 +52,7 @@ class IMorreSearchForm(zope.interface.Interface):
         required=False,
         value_type=zope.schema.Choice(vocabulary='morre.pmr2.features'),
     )
+
+
+class IMorreSearchFormLayer(IFormLayer):
+    pass
