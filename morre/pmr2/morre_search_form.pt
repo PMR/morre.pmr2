@@ -23,13 +23,72 @@
   <tal:loop tal:repeat="result view/results">
     <dt><a tal:condition="exists:result/documentURI"
         tal:content="result/modelName" tal:attributes="
-        href result/documentURI"></a></dt>
+        href string:${result/documentURI}/view"></a></dt>
     <dd>
       <ul>
-        <li>modelID: <span tal:condition="exists:result/modelID"
-            tal:replace="result/modelID"/></li>
-        <li>score: <span tal:condition="exists:result/score"
-            tal:replace="result/score"/></li>
+
+        <tal:if tal:condition="exists:result/person/lastName">
+          <li>name: <span tal:replace="result/person/lastName"/>,
+
+          <tal:if tal:condition="exists:result/person/firstName">
+            <span tal:replace="result/person/firstName"/>
+          </tal:if>
+          </li>
+
+        </tal:if>
+
+        <tal:if tal:condition="exists:result/modelID">
+          <li>modelID: <span tal:replace="result/modelID"/></li>
+        </tal:if>
+
+        <tal:if tal:condition="exists:result/relatedModelsURI">
+          <li>
+            related: 
+            <ul>
+              <tal:loop tal:repeat="relatedHref result/relatedModelsURI">
+                <li><a tal:content="relatedHref" tal:attributes="
+                    href string:${relatedHref}/view"></a></li>
+              </tal:loop>
+            </ul>
+          </li>
+        </tal:if>
+
+        <tal:if tal:condition="exists:result/publication">
+          <li>
+            publication:
+            <ul>
+
+              <tal:if tal:condition="exists:result/publication/title">
+                <li>title: <span tal:replace="result/publication/title"/></li>
+              </tal:if>
+
+              <tal:if tal:condition="exists:result/publication/authors">
+                <li>
+                  authors:
+                  <ul>
+                    <tal:loop tal:repeat="authors result/publication/authors">
+
+                      <li>name: <span tal:replace="authors/lastName"/>,
+                      <tal:if tal:condition="exists:authors/firstName">
+                        <span tal:replace="authors/firstName"/>
+                      </tal:if>
+                      </li>
+
+                    </tal:loop>
+                  </ul>
+
+                </li>
+
+              </tal:if>
+            </ul>
+          </li>
+        </tal:if>
+
+        <tal:if tal:condition="exists:result/score">
+          <li>score: <span
+              tal:replace="result/score"/></li>
+        </tal:if>
+
       </ul>
     </dd>
   </tal:loop>
