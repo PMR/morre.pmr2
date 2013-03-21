@@ -18,7 +18,7 @@
                       structure context/@@authenticator/authenticator" />
                   <tal:if tal:condition="exists:view/results">
 
-<h3>Result</h3>
+<h3>Results (total <tal:span tal:replace="python:len(view.results)" />)</h3>
 <dl>
   <tal:loop tal:repeat="result view/results">
     <dt><a tal:condition="exists:result/documentURI"
