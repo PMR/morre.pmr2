@@ -7,7 +7,7 @@ import zope.interface
 from zope.schema.fieldproperty import FieldProperty
 
 from persistent import Persistent
-from zope.app.container.contained import Contained
+from zope.container.contained import Contained
 
 from morre.pmr2.exc import MorreServerError
 from morre.pmr2.interfaces import IMorreServer

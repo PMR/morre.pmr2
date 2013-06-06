@@ -3,7 +3,7 @@ import json
 import zope.component
 from zope.component.hooks import getSiteManager
 from zope.publisher.interfaces.browser import IBrowserRequest
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 
 import z3c.form
 from z3c.form import button
