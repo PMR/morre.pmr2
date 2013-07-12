@@ -1,4 +1,5 @@
 import json
+from urlparse import urlparse
 
 import zope.component
 from zope.component.hooks import getSiteManager
@@ -11,6 +12,7 @@ from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from plone.z3cform.fieldsets import extensible
 
 from Products.statusmessages.interfaces import IStatusMessage
+from Products.CMFCore.utils import getToolByName
 
 from pmr2.z3cform import form
 
@@ -124,6 +126,9 @@ class MorreSearchForm(form.PostForm, extensible.ExtensibleForm):
     ignoreContext = True
     template = ViewPageTemplateFile('morre_search_form.pt')
 
+    results = None
+    result_count = 0
+
     def __init__(self, *a, **kw):
         super(MorreSearchForm, self).__init__(*a, **kw)
         self.fields = z3c.form.field.Fields()
@@ -169,7 +174,38 @@ class MorreSearchForm(form.PostForm, extensible.ExtensibleForm):
             # assume fail somewhere (no results most likely)
             return
 
+        self.processResults(results)
+
+    def processResults(self, raw_results):
+        """
+        """
+
+        results = []
+        catalog = getToolByName(self.context, 'portal_catalog')
+        portal_url = getToolByName(self.context, 'portal_url')
+        portal_path = portal_url.getPortalPath()
+
+        for result in raw_results:
+            # XXX here we have the assumption of where the file actually
+            # is.
+            subpath = urlparse(result['documentURI']).path
+            brains = catalog(path=portal_path + subpath)
+            if not brains:
+                continue
+
+            brain = brains[0]
+
+            if brain.pmr2_review_state != 'published':
+                # must be published (i.e. not expired).
+                continue
+
+            # XXX based on the old school items
+            result['modelName'] = brain.pmr1_citation_authors
+            result['modelDescription'] = brain.pmr1_citation_title
+            results.append(result)
+
         self.results = results
+        self.result_count = len(self.results)
 
     def appendGroups(self):
         self.groups = []

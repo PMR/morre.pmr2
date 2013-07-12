@@ -16,15 +16,17 @@
               <metal:main fill-slot="formbottom">
                   <span tal:replace="
                       structure context/@@authenticator/authenticator" />
-                  <tal:if tal:condition="exists:view/results">
+                  <tal:if tal:condition="view/results">
 
-<h3>Results (total <tal:span tal:replace="python:len(view.results)" />)</h3>
+<h3>Results (total <tal:span tal:replace="view/result_count" />)</h3>
 <dl>
   <tal:loop tal:repeat="result view/results">
     <dt><a tal:condition="exists:result/documentURI"
         tal:content="result/modelName" tal:attributes="
         href string:${result/documentURI}/view"></a></dt>
     <dd>
+      <p tal:condition="exists:result/modelDescription"
+          tal:content="result/modelDescription"></p>
       <ul>
 
         <tal:if tal:condition="exists:result/person/lastName">
