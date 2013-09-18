@@ -188,7 +188,13 @@ class MorreSearchForm(form.PostForm, extensible.ExtensibleForm):
         for result in raw_results:
             # XXX here we have the assumption of where the file actually
             # is.
-            subpath = urlparse(result['documentURI']).path
+            try:
+                subpath = urlparse(result['documentURI']).path
+            except KeyError:
+                # not an exposure result, append as is
+                results.append(result)
+                continue
+
             brains = catalog(path=portal_path + subpath)
             if not brains:
                 continue
