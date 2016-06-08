@@ -22,6 +22,18 @@
       permission="cmf.ManagePortal"
       />
 
+  <subscriber
+      for="pmr2.app.exposure.interfaces.IExposure
+           Products.DCWorkflow.interfaces.IAfterTransitionEvent"
+      handler=".subscriber.add_to_morre"
+      />
+
+  <subscriber
+      for="pmr2.app.exposure.interfaces.IExposure
+           Products.DCWorkflow.interfaces.IAfterTransitionEvent"
+      handler=".subscriber.del_from_morre"
+      />
+
   <browser:page
       name="ploneform-macros"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"

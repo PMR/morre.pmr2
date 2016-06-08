@@ -23,6 +23,7 @@ class MorreServer(Persistent, Contained):
     server_uri = FieldProperty(IMorreServer['server_uri'])
     endpoints = FieldProperty(IMorreServer['endpoints'])
     portal_http_host = FieldProperty(IMorreServer['portal_http_host'])
+    index_on_wfstate = FieldProperty(IMorreServer['index_on_wfstate'])
 
     features = FieldProperty(IMorreServer['features'])
 

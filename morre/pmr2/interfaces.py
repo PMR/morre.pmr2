@@ -28,6 +28,13 @@ class IMorreServer(zope.interface.Interface):
         value_type=zope.schema.TextLine(),
     )
 
+    index_on_wfstate = zope.schema.List(
+        title=u'Workflow states to index',
+        description=u'Workflow states that permit addition to morre.',
+        required=False,
+        value_type=zope.schema.TextLine(),
+    )
+
     features = zope.schema.Dict(
         title=u'Cached Features',
         required=False,

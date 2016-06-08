@@ -26,6 +26,7 @@ Activate the server::
     ...     'form.widgets.server_uri': u'http://127.0.0.1:7474',
     ...     'form.widgets.endpoints': u'/morre/query/cellml_model_query\n'
     ...                                '/morre/query/person_model_query',
+    ...     'form.widgets.index_on_wfstate': u'published',
     ...     'form.buttons.install': 1,
     ... })
     >>> view = MorreAdminForm(self.portal, request)
@@ -40,6 +41,8 @@ The workflow, along with the active host should be registered to the,
 object also::
 
     >>> ms = view.getContent()
+    >>> ms.index_on_wfstate
+    [u'published']
     >>> ms.portal_http_host
     u'127.0.0.1'
 
