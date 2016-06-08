@@ -183,7 +183,6 @@ class MorreSearchForm(form.PostForm, extensible.ExtensibleForm):
         results = []
         catalog = getToolByName(self.context, 'portal_catalog')
         portal_url = getToolByName(self.context, 'portal_url')
-        portal_path = portal_url.getPortalPath()
 
         for result in raw_results:
             # XXX here we have the assumption of where the file actually
@@ -204,6 +203,8 @@ class MorreSearchForm(form.PostForm, extensible.ExtensibleForm):
             if brain.pmr2_review_state != 'published':
                 # must be published (i.e. not expired).
                 continue
+
+            result['documentURI'] = brain.getURL()
 
             # XXX based on the old school items
             result['modelName'] = brain.pmr1_citation_authors
