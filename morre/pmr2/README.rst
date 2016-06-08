@@ -36,6 +36,13 @@ Activate the server::
     >>> view.status
     u'Data successfully updated.'
 
+The workflow, along with the active host should be registered to the,
+object also::
+
+    >>> ms = view.getContent()
+    >>> ms.portal_http_host
+    u'127.0.0.1'
+
 Now the search form should be rendered::
 
     >>> request = TestRequest()

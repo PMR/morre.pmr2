@@ -35,6 +35,12 @@ class MorreAdminForm(form.EditForm):
         return result
 
     def update(self):
+        http_host = self.request.get('HTTP_HOST', '127.0.0.1')
+
+        # a hacky way to override one-off values without plunging into
+        # the whole persistent registration framework.
+        self.request['form.widgets.portal_http_host'] = unicode(http_host)
+
         if self.getContent() is not None:
             self.ignoreContext = False
         super(MorreAdminForm, self).update()
@@ -180,6 +186,7 @@ class MorreSearchForm(form.PostForm, extensible.ExtensibleForm):
         """
         """
 
+        server = self.getContent()
         results = []
         catalog = getToolByName(self.context, 'portal_catalog')
         portal_url = getToolByName(self.context, 'portal_url')
@@ -187,6 +194,7 @@ class MorreSearchForm(form.PostForm, extensible.ExtensibleForm):
         for result in raw_results:
             # XXX here we have the assumption of where the file actually
             # is.
+
             try:
                 subpath = urlparse(result['documentURI']).path
             except KeyError:
@@ -194,7 +202,7 @@ class MorreSearchForm(form.PostForm, extensible.ExtensibleForm):
                 results.append(result)
                 continue
 
-            brains = catalog(path=portal_path + subpath)
+            brains = catalog(path=subpath)
             if not brains:
                 continue
 

@@ -15,6 +15,13 @@ class IMorreServer(zope.interface.Interface):
         default=u'http://127.0.0.1:7474',
     )
 
+    portal_http_host = zope.schema.TextLine(
+        title=u'Portal HTTP Host',
+        description=u'The true host of server behind http. This value is set'
+                     'automatically, please select install to finalize.',
+        default=u'',
+    )
+
     endpoints = zope.schema.List(
         title=u'Endpoints',
         description=u'Paths to the valid query endpoints on that server',
