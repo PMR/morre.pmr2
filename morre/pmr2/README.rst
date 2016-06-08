@@ -61,6 +61,37 @@ Now the search form should be rendered::
     >>> view.groups[1].fields.keys()
     ['EMAIL', 'FAMILYNAME', 'GIVENNAME']
 
+Pretend to add a model and see that we track it::
+
+    >>> ms = zope.component.queryUtility(IMorreServer)
+    >>> path = '/dummy/test/model'
+    >>> ms.add_model(path)
+    True
+    >>> ms._last_post['endpoint']
+    '/morre/model_update_service/add_model'
+    >>> ms._last_post['data']['url']
+    u'http://127.0.0.1/dummy/test/model'
+    >>> ms._last_post['data']['fileId']
+    'model'
+    >>> ms.path_to_njid.get(path)
+    '1'
+
+Can't add this again::
+
+    >>> ms.add_model(path)
+    False
+
+Delete should also work::
+
+    >>> ms.del_model(path)
+    True
+    >>> ms._last_post['endpoint']
+    '/morre/model_update_service/delete_model'
+    >>> ms._last_post['data']['uID']
+    '1'
+    >>> ms.del_model(path)
+    False
+
 Try to query against this form::
 
     >>> request = TestRequest(form={
