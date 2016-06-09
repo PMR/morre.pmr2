@@ -11,6 +11,8 @@ from Products.PloneTestCase.layer import PloneSite
 from Products.PloneTestCase.layer import onsetup
 from Products.PloneTestCase.layer import onteardown
 
+from pmr2.app.exposure.tests.base import CompleteDocTestCase
+
 
 @onsetup
 def setup():
@@ -26,3 +28,9 @@ def teardown():
 setup()
 teardown()
 ptc.setupPloneSite()
+
+
+class MorreExposureTestCase(CompleteDocTestCase):
+    """
+    Base test case class, we want a complete environment here.
+    """

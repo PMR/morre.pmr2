@@ -11,21 +11,22 @@ def get_exposure_files(obj):
     return (p.getPath() for p in c(portal_type='ExposureFile', path=path))
 
 
-def add_to_morre(obj, event):
-    ms = zope.component.getUtility(IMorreServer)
+def create_handler(checker, method):
+    def handler(obj, event):
+        ms = zope.component.queryUtility(IMorreServer)
+        if not ms or not event.transition:
+            return
 
-    if event.transition.new_state_id not in ms.index_on_wfstate:
-        return
+        if not checker(event.transition.new_state_id,
+                       ms.index_on_wfstate or []):
+            return
 
-    for p in get_exposure_files(obj):
-        ms.add_model(p)
+        for p in get_exposure_files(obj):
+            getattr(ms, method)(p)
 
+    return handler
 
-def del_from_morre(obj, event):
-    ms = zope.component.getUtility(IMorreServer)
-
-    if event.transition.new_state_id in ms.index_on_wfstate:
-        return
-
-    for p in get_exposure_files(obj):
-        ms.del_model(p)
+add_to_morre = create_handler(
+    lambda state, states: state in states, 'add_model')
+del_from_morre = create_handler(
+    lambda state, states: state not in states, 'del_model')

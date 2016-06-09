@@ -18,6 +18,7 @@ class MockMorreServer(MorreServer):
 
     features = {}
     _post_response = {}
+    _last_post = None
 
     _custom_features = False
     _demo = {
