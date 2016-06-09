@@ -22,6 +22,13 @@
       permission="cmf.ManagePortal"
       />
 
+  <browser:view
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="morre_pmr2_index"
+      class=".browser.MorreIndexForm"
+      permission="cmf.ManagePortal"
+      />
+
   <subscriber
       for="pmr2.app.exposure.interfaces.IExposure
            Products.DCWorkflow.interfaces.IAfterTransitionEvent"

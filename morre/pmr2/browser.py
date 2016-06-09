@@ -92,6 +92,28 @@ class MorreAdminForm(form.EditForm):
         self.status = _(u'Server uninstalled')
 
 
+class MorreIndexForm(form.PostForm):
+
+    ignoreContext = True
+
+    @button.buttonAndHandler(_('Index'), name='index')
+    def handleIndex(self, action):
+        data, errors = self.extractData()
+        server = zope.component.queryUtility(IMorreServer)
+        if server is None:
+            self.status = _(u'Server was not installed')
+            return
+
+        if not server.index_on_wfstate:
+            return
+
+        catalog = getToolByName(self.context, name='portal_catalog')
+        for b in catalog(portal_type='ExposureFile',
+                         pmr2_review_state={'query': server.index_on_wfstate}):
+            path = b.getPath()
+            server.add_model(path)
+
+
 class MorreSearchGroup(form.PostForm, form.Group):
 
     ignoreContext = True
