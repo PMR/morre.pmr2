@@ -4,6 +4,7 @@ from zope.schema.fieldproperty import FieldProperty
 
 from morre.pmr2.utility import MorreServer
 from morre.pmr2.interfaces import IMorreServer
+from morre.pmr2.exc import MorreServerError
 
 
 class MockMorreServer(MorreServer):
@@ -33,6 +34,8 @@ class MockMorreServer(MorreServer):
 
     def _post(self, endpoint, data):
         self._last_post = {'endpoint': endpoint, 'data': data}
+        if not isinstance(self._post_response, dict):
+            raise MorreServerError
         return self._post_response
 
     def update(self):
@@ -50,8 +53,16 @@ class MockMorreServer(MorreServer):
     def query(self, end_point, params):
         return []
 
-    def add_model(self, *a, **kw):
+    def add_model(self, path, *a, **kw):
         # TODO actually move this to the test harness, mocking the
         # session or something.
-        self._post_response = {'uID': '1'}
-        return super(MockMorreServer, self).add_model(*a, **kw)
+        if 'error' in path:
+            self._post_response = {u'errors': [{
+                u'message': u'Some error happened',
+                u'code': u'Neo.ClientError.Error'
+            }]}
+        elif 'exception' in path:
+            self._post_reponse = None
+        else:
+            self._post_response = {'uID': '1'}
+        return super(MockMorreServer, self).add_model(path, *a, **kw)

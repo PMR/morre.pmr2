@@ -46,8 +46,8 @@ class MorreServer(Persistent, Contained):
                 # TODO subclass a more appropriate error.
                 raise MorreServerError()
         except requests.exceptions.RequestException:
-            logger.info('Error while trying to access %s', url, exc_info=1)
-            return MorreServerError()
+            logger.warning('Error while trying to access %s', url, exc_info=1)
+            return {}
 
     def _post(self, endpoint, data):
         url = self.server_uri + endpoint
@@ -62,8 +62,8 @@ class MorreServer(Persistent, Contained):
                 logger.info('No json can be decoded from %s', url)
                 return r.text
         except requests.exceptions.RequestException:
-            logger.info('Error while trying to access %s', url, exc_info=1)
-            return MorreServerError()
+            logger.warning('Error while trying to access %s', url, exc_info=1)
+            return {}
 
     def update(self):
         self.features = {}
@@ -144,13 +144,19 @@ class MorreServer(Persistent, Contained):
         endpoint = '/morre/model_update_service/add_model'
         file_id = object_path.rsplit('/', 1)[-1]
         url = 'http://' + portal_http_host + object_path
-        response = self._post(endpoint, data={
-            'fileId': file_id,
-            'url': url,
-            'modelType': model_type,
-        })
-
-        self.path_to_njid[object_path] = response['uID']
+        try:
+            response = self._post(endpoint, data={
+                'fileId': file_id,
+                'url': url,
+                'modelType': model_type,
+            })
+        except MorreServerError:
+            return False
+        else:
+            if 'uID' not in response:
+                logger.warning('no uID in response body: %s', response)
+                return False
+            self.path_to_njid[object_path] = response['uID']
         return True
 
     def del_model(self, object_path):
@@ -166,11 +172,14 @@ class MorreServer(Persistent, Contained):
             # did not delete anything.
             return False
 
-        response = self._post(endpoint, data={
-            'uID': uid,
-        })
+        try:
+            response = self._post(endpoint, data={
+                'uID': uid,
+            })
+        except MorreServerError:
+            logger.warning('unable to remove uID:%s from morre server', uid)
+            # Continue anyway...
 
         self.path_to_njid.pop(object_path)
-
         # assume we got this
         return True

@@ -84,6 +84,13 @@ Can't add this again::
     >>> ms.add_model(path)
     False
 
+If an error response happened on the server side, don't crash::
+
+    >>> ms.add_model('/dummy/test/error')
+    False
+    >>> ms.add_model('/dummy/test/exception')
+    False
+
 Delete should also work::
 
     >>> ms.del_model(path)
